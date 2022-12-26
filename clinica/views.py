@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from rest_framework import viewsets
 from .serializers import EspecialidadesSerializer,MedicoSerializer, ConsultaSerializer, ClienteSerializer, AgendaSerializer
 from .models import Especialidades, Medico, Consulta, Cliente, Agenda
@@ -25,20 +25,22 @@ class ClienteViewSet(viewsets.ModelViewSet):
     queryset=Cliente.objects.all()
 class AgendaViewSet(viewsets.ModelViewSet):
     serializer_class=AgendaSerializer
-    def get_queryset(self):
-        queryset=Agenda.objects.all()
+    queryset=Agenda.objects.all()
     def create(self, request):
         response=''
         med=request.POST.get('medico')
-        d=request.POST.get('dia')
+        di=request.POST.get('dia')
         h=request.POST.get('horarios')
-        busca=Agenda.objects.filter(medico=med).filter(dia=d)
+        busca=Agenda.objects.filter(medico=med).filter(dia=di)
         d=datetime.now()
-        print(d.day)
         dia=d.day
-        if((busca is not None) and d>=dia):
-            a=Agenda(medico=med,dia=d,horarios=h)
+        print('day: ',dia)
+        print('di',di)
+        print('resultado da busca: ',busca)
+        if(len(busca)<=0):
+            medico=Medico.objects.get(id=int(med))
+            a=Agenda(medico=Medico.objects.get(id=medico.id),dia=d,horarios=h)
             a.save()
-            response='Agenda Criada para o médico '.med
+            response='Agenda Criada para o médico ',medico.nome
         return Response(response)
 # Create your views here.
