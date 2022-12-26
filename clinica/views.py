@@ -2,7 +2,8 @@ from django.shortcuts import render,get_object_or_404
 from rest_framework import viewsets
 from .serializers import EspecialidadesSerializer,MedicoSerializer, ConsultaSerializer, ClienteSerializer, AgendaSerializer
 from .models import Especialidades, Medico, Consulta, Cliente, Agenda
-from datetime import datetime
+from datetime import date
+import datetime
 from rest_framework.response import Response
 class EspecialidadesViewSet(viewsets.ModelViewSet):
     serializer_class=EspecialidadesSerializer
@@ -32,15 +33,24 @@ class AgendaViewSet(viewsets.ModelViewSet):
         di=request.POST.get('dia')
         h=request.POST.get('horarios')
         busca=Agenda.objects.filter(medico=med).filter(dia=di)
-        d=datetime.now()
-        dia=d.day
-        print('day: ',dia)
+        d=str(date.today())
         print('di',di)
         print('resultado da busca: ',busca)
+        print('dia de hoje: ',d)
+        data_compara=datetime.datetime.fromisoformat(di)
+        hoje=datetime.datetime.fromisoformat(d)
         if(len(busca)<=0):
-            medico=Medico.objects.get(id=int(med))
-            a=Agenda(medico=Medico.objects.get(id=medico.id),dia=d,horarios=h)
-            a.save()
-            response='Agenda Criada para o médico ',medico.nome
+            if(hoje<=data_compara):
+                medico=Medico.objects.get(id=int(med))
+                a=Agenda(medico=Medico.objects.get(id=medico.id),dia=d,horarios=h)
+                a.save()
+                response='Agenda Criada para o médico '+medico.nome
+            elif(len(busca)>0):
+                response='agenda já feita para este dia!'
+            elif(hoje>data_compara):
+                response='data que você escolheu é anterior a atual!'
+        else:
+            response='Erro inesperado!'
+            
         return Response(response)
 # Create your views here.
