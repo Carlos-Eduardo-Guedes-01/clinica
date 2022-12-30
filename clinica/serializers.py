@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from .models import Especialidades, Medico, Consulta, Cliente, Agenda
 
 class EspecialidadesSerializer(serializers.ModelSerializer):
@@ -12,7 +13,7 @@ class MedicoSerializer(serializers.ModelSerializer):
 class ClienteSerializer(serializers.ModelSerializer):
     class Meta:
         model=Cliente
-        fields=['nome','cpf','email','telefone','sexo',]
+        fields=['cpf','sexo','telefone','first_name','email','password','username']
 class AgendaSerializer(serializers.ModelSerializer):
     class Meta:
         model=Agenda

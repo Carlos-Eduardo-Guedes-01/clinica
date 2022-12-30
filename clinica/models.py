@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 class Especialidades(models.Model):
     nome=models.CharField(max_length=200)
     def __str__(self):
@@ -17,17 +18,18 @@ class Agenda(models.Model):
     horarios=models.TimeField()
     def __str__(self):
         return self.medico.nome
-class Cliente(models.Model):
-    nome=models.CharField(max_length=200)
-    cpf=models.CharField(max_length=100)
-    email=models.CharField(max_length=200)
-    sexo=models.CharField(max_length=5)
-    telefone=models.CharField(max_length=30)
+class Cliente(User):
+    #cliente=models.OneToOneField(AbstractUser, on_delete=models.CASCADE)
+    cpf=models.CharField(max_length=20)
+    sexo=models.CharField(max_length=3)
+    telefone=models.CharField(max_length=21)
+    USERNAME_FIELD='username'
+    REQUIRED_FIELDS=['first_name','email','password']
     def __str__(self):
-        return self.nome
+        return self.cliente.first_name
 class Consulta(models.Model):
-    cliente=models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    #cliente=models.ForeignKey(Cliente, on_delete=models.CASCADE)
     agenda=models.ForeignKey(Agenda, on_delete=models.CASCADE)
-    def __str__(self):
+    '''def __str__(self):
         return self.cliente.nome
-        
+        '''

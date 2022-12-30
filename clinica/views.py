@@ -4,6 +4,7 @@ from .serializers import EspecialidadesSerializer,MedicoSerializer, ConsultaSeri
 from .models import Especialidades, Medico, Consulta, Cliente, Agenda
 from datetime import date
 import datetime
+#from rest_framework import permissions
 from rest_framework.response import Response
 class EspecialidadesViewSet(viewsets.ModelViewSet):
     serializer_class=EspecialidadesSerializer
@@ -22,6 +23,7 @@ class ConsultaViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset=Consulta.objects.all()
 class ClienteViewSet(viewsets.ModelViewSet):
+    #permission_classes = [permissions.BasePermission]
     serializer_class=ClienteSerializer
     queryset=Cliente.objects.all()
 class AgendaViewSet(viewsets.ModelViewSet):
