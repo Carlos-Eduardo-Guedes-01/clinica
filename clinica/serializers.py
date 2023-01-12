@@ -21,4 +21,4 @@ class AgendaSerializer(serializers.ModelSerializer):
 class ConsultaSerializer(serializers.ModelSerializer):
     class Meta:
         model=Consulta
-        fields=['cliente','agenda',]
+        fields=['cliente','data',]

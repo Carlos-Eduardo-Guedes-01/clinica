@@ -24,7 +24,7 @@ from django.conf.urls.static import static
 router=routers.DefaultRouter()
 router.register('CadastroEspecialidade',EspecialidadesViewSet, basename='Especialidades')
 router.register('CadastroMedico',MedicoViewSet, basename='Medicos')
-router.register('CadastroConsulta',ConsultaViewSet, basename='Consultas')
+router.register('RealizaConsulta',ConsultaViewSet, basename='Consultas')
 router.register('CadastroCliente',ClienteViewSet, basename='Clientes')
 router.register('CadastroAgenda',AgendaViewSet, basename='Agendas')
 urlpatterns = [

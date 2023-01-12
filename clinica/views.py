@@ -5,7 +5,10 @@ from .models import Especialidades, Medico, Consulta, Cliente, Agenda
 from datetime import date
 import datetime
 #from rest_framework import permissions
+from django.contrib.auth import logout
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
 class EspecialidadesViewSet(viewsets.ModelViewSet):
     serializer_class=EspecialidadesSerializer
     queryset=Especialidades.objects.all()
@@ -19,9 +22,10 @@ class MedicoViewSet(viewsets.ModelViewSet):
     serializer_class=MedicoSerializer
     queryset=Medico.objects.all()
 class ConsultaViewSet(viewsets.ModelViewSet):
+    from rest_framework import permissions
     serializer_class=ConsultaSerializer
-    def get_queryset(self):
-        queryset=Consulta.objects.all()
+    #permission_classes = [permissions.DjangoObjectPermissions]
+    queryset=Consulta.objects.all()
 class ClienteViewSet(viewsets.ModelViewSet):
     #permission_classes = [permissions.BasePermission]
     serializer_class=ClienteSerializer

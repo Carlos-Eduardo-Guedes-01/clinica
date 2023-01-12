@@ -17,19 +17,16 @@ class Agenda(models.Model):
     dia=models.DateField(null=True)
     horarios=models.TimeField()
     def __str__(self):
-        return self.medico.nome
+        return str('Dia %s com médico %s'%(self.dia,self.medico))
 class Cliente(User):
     #cliente=models.OneToOneField(AbstractUser, on_delete=models.CASCADE)
     cpf=models.CharField(max_length=20)
     sexo=models.CharField(max_length=3)
     telefone=models.CharField(max_length=21)
-    USERNAME_FIELD='username'
-    REQUIRED_FIELDS=['first_name','email','password']
     def __str__(self):
         return self.cliente.first_name
 class Consulta(models.Model):
-    #cliente=models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    agenda=models.ForeignKey(Agenda, on_delete=models.CASCADE)
-    '''def __str__(self):
-        return self.cliente.nome
-        '''
+    cliente=models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    data=models.ForeignKey(Agenda, on_delete=models.CASCADE)
+    def __str__(self):
+        return str(self.cliente.first_name)
