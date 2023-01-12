@@ -19,6 +19,10 @@ from rest_framework import routers
 from clinica.views import EspecialidadesViewSet, MedicoViewSet, ConsultaViewSet, ClienteViewSet, AgendaViewSet
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 
 router=routers.DefaultRouter()
@@ -30,4 +34,6 @@ router.register('CadastroAgenda',AgendaViewSet, basename='Agendas')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls), name='index'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
