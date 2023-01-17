@@ -10,10 +10,16 @@ class MedicoSerializer(serializers.ModelSerializer):
     class Meta:
         model=Medico
         fields=['nome','crm','email','telefone','especialidade',]
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields=['first_name','email','password','username',]
 class ClienteSerializer(serializers.ModelSerializer):
+    tracks=UserSerializer(many=True, read_only=True)
     class Meta:
         model=Cliente
-        fields=['cpf','sexo','telefone','first_name','email','password','username']
+        fields=['cpf','sexo','telefone','tracks']
+
 class AgendaSerializer(serializers.ModelSerializer):
     class Meta:
         model=Agenda

@@ -23,6 +23,7 @@ class Cliente(User):
     cpf=models.CharField(max_length=20)
     sexo=models.CharField(max_length=3)
     telefone=models.CharField(max_length=21)
+    USERNAME_FIELD='email'
     def __str__(self):
         return self.cliente.first_name
 class Consulta(models.Model):

@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404
 from rest_framework import viewsets
-from .serializers import EspecialidadesSerializer,MedicoSerializer, ConsultaSerializer, ClienteSerializer, AgendaSerializer
+from .serializers import EspecialidadesSerializer,MedicoSerializer, ConsultaSerializer, ClienteSerializer, AgendaSerializer, UserSerializer
 from .models import Especialidades, Medico, Consulta, Cliente, Agenda
 from datetime import date
 import datetime
@@ -8,6 +8,7 @@ from rest_framework import permissions
 from django.contrib.auth import logout
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.shortcuts import render,redirect
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -27,6 +28,8 @@ class MedicoViewSet(viewsets.ModelViewSet):
 class ConsultaViewSet(viewsets.ModelViewSet):
     from rest_framework import permissions
     serializer_class=ConsultaSerializer
+    def perform_authentication(self, request):
+        return redirect("token_obtain_pair")
     permission_classes = [permissions.DjangoObjectPermissions]
     queryset=Consulta.objects.all()
 class ClienteViewSet(viewsets.ModelViewSet):
