@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
+
 class Especialidades(models.Model):
     nome=models.CharField(max_length=200)
     def __str__(self):
@@ -15,14 +17,23 @@ class Medico(models.Model):
 class Agenda(models.Model):
     medico=models.ForeignKey(Medico, on_delete=models.CASCADE)
     dia=models.DateField(null=True)
-    horarios=models.TimeField()
+    h_choice=(("1", "07:00-08:00"),("2", "08:00-09:00"),("3", "09:00-10:00"),("4", "10:00-11:00"),("5", "11:00-12:00"),("6", "14:00-15:00"),("7", "15:00-16:00"),("8", "16:00-17:00"))
+    marcado=models.CharField(max_length=30,choices=h_choice)
     def __str__(self):
-        return str('Dia %s com médico %s'%(self.dia,self.medico))
+        return str('Dia %s com médico %s'%(self.dia,self.medico)%' às '%(str(self.h_choice(self.marcado))))
 class Cliente(User):
-    #cliente=models.OneToOneField(AbstractUser, on_delete=models.CASCADE)
-    cpf=models.CharField(max_length=20)
-    sexo=models.CharField(max_length=3)
-    telefone=models.CharField(max_length=21)
+    cpfRegex = RegexValidator(
+    regex=r'^\+?1?\d{9,15}$',
+    message="O CPF precisa estar neste formato: \
+                    '088.417.463-86'.")
+    sx_choice=(('1','M'),('2','F'),('3','Per'))
+    cpf=models.CharField(max_length=20, validators=[cpfRegex], verbose_name='CPF')
+    sexo=models.CharField(max_length=3,choices=sx_choice)
+    phone_regex = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$',
+        message="O número precisa estar neste formato: \
+                        '+99 99 9999-0000'.")
+    telefone=models.CharField(max_length=21,verbose_name="Telefone",validators=[phone_regex])
     USERNAME_FIELD='email'
     def __str__(self):
         return self.cliente.first_name

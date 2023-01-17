@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404
 from rest_framework import viewsets
-from .serializers import EspecialidadesSerializer,MedicoSerializer, ConsultaSerializer, ClienteSerializer, AgendaSerializer, UserSerializer
+from .serializers import EspecialidadesSerializer,MedicoSerializer, ConsultaSerializer, ClienteSerializer, AgendaSerializer
 from .models import Especialidades, Medico, Consulta, Cliente, Agenda
 from datetime import date
 import datetime
@@ -9,6 +9,8 @@ from django.contrib.auth import logout
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.shortcuts import render,redirect
+from validate_docbr import CPF
+from django.contrib.auth.models import User
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -42,7 +44,7 @@ class AgendaViewSet(viewsets.ModelViewSet):
         response=''
         med=request.POST.get('medico')
         di=request.POST.get('dia')
-        h=request.POST.get('horarios')
+        h=request.POST.get('marcado')
         busca=Agenda.objects.filter(medico=med).filter(dia=di)
         d=str(date.today())
         print('di',di)
@@ -53,7 +55,7 @@ class AgendaViewSet(viewsets.ModelViewSet):
         if(len(busca)<=0):
             if(hoje<=data_compara):
                 medico=Medico.objects.get(id=int(med))
-                a=Agenda(medico=Medico.objects.get(id=medico.id),dia=d,horarios=h)
+                a=Agenda(medico=Medico.objects.get(id=medico.id),dia=d,marcado=h)
                 a.save()
                 response='Agenda Criada para o médico '+medico.nome
             elif(len(busca)>0):
