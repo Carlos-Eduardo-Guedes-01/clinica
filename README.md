@@ -1,5 +1,4 @@
 # clinica
-# consumindo-arquivo
 
 ## passo 1: crie uma pasta para guardar o projeto e navegue para dentro dela:
 
