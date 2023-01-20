@@ -30,10 +30,8 @@ class MedicoViewSet(viewsets.ModelViewSet):
 class ConsultaViewSet(viewsets.ModelViewSet):
     from rest_framework import permissions
     serializer_class=ConsultaSerializer
-    def perform_authentication(self, request):
-        return redirect("token_obtain_pair")
-    permission_classes = [permissions.DjangoObjectPermissions]
     queryset=Consulta.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
 class ClienteViewSet(viewsets.ModelViewSet):
     serializer_class=ClienteSerializer
     queryset=Cliente.objects.all()

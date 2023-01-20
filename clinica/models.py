@@ -19,26 +19,24 @@ class Agenda(models.Model):
     dia=models.DateField(null=True)
     h_choice=(("1", "07:00-08:00"),("2", "08:00-09:00"),("3", "09:00-10:00"),("4", "10:00-11:00"),("5", "11:00-12:00"),("6", "14:00-15:00"),("7", "15:00-16:00"),("8", "16:00-17:00"))
     marcado=models.CharField(max_length=30,choices=h_choice)
+    
     def __str__(self):
-        return str('Dia %s com médico %s'%(self.dia,self.medico)%' às '%(str(self.h_choice(self.marcado))))
+        #string=str()
+        return 'Dia '+str(self.dia)+' com médico '+str(self.medico.nome)+' ás '+str(self.marcado)
 class Cliente(User):
-    cpfRegex = RegexValidator(
-    regex=r'^\+?1?\d{9,15}$',
-    message="O CPF precisa estar neste formato: \
-                    '088.417.463-86'.")
+
     sx_choice=(('1','M'),('2','F'),('3','Per'))
-    cpf=models.CharField(max_length=20, validators=[cpfRegex], verbose_name='CPF')
+    cpf=models.CharField(max_length=20, verbose_name='CPF')
     sexo=models.CharField(max_length=3,choices=sx_choice)
     phone_regex = RegexValidator(
         regex=r'^\+?1?\d{9,15}$',
         message="O número precisa estar neste formato: \
                         '+99 99 9999-0000'.")
     telefone=models.CharField(max_length=21,verbose_name="Telefone",validators=[phone_regex])
-    USERNAME_FIELD='email'
     def __str__(self):
         return self.cliente.first_name
 class Consulta(models.Model):
     cliente=models.ForeignKey(Cliente, on_delete=models.CASCADE)
     data=models.ForeignKey(Agenda, on_delete=models.CASCADE)
     def __str__(self):
-        return str(self.cliente.first_name)
+        return str(self.cliente)+self.data
